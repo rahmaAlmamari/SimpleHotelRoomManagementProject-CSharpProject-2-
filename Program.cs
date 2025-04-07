@@ -4,8 +4,42 @@ namespace Project2
 {
     internal class Program
     {
+
+        // Data Structures ...
+        // declare the globle variable needed ...
+        static int MAX_ROOMS;
+        static int roomCount = 0;
+        // declare the array and variable needed ....
+        static int[] roomNumbers = new int[MAX_ROOMS];
+        static double[] roomRates = new double[MAX_ROOMS];
+        static bool[] isReserved = new bool[MAX_ROOMS];
+        static string[] guestNames = new string[MAX_ROOMS];
+        static int[] nights = new int[MAX_ROOMS];
+        static DateTime[] bookingDates = new DateTime[MAX_ROOMS];
+
+
+
         static void Main(string[] args)
         {
+            bool capacity_flag = false;
+            Console.WriteLine("Welcome to Hotel Room Management system ... please enter your system capacity:");
+            do
+            {
+                try
+                {
+                    MAX_ROOMS = int.Parse(Console.ReadLine());
+                    capacity_flag = false;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("choosing option process is stoped due to: " + e.Message + "please click enter key to start over");
+                   // Console.ReadLine();//just to hold second ...
+                    capacity_flag = true;
+                }
+            } while (capacity_flag);
+ 
+            
+
             // we use while loop to repeat the process and we set true so it will not stop ... 
             while (true)
             {
@@ -24,7 +58,7 @@ namespace Project2
 
                 int choice = 0;
                 // to check if the user int right input or not ... 
-                bool flag = false;
+                bool option_flag = false;
                 // use try and catch to make sure the the user will input the right input ...
                 try
                 {
@@ -35,11 +69,11 @@ namespace Project2
                 {
                     Console.WriteLine("choosing option process is stoped due to: " + e.Message);
                     //Console.ReadLine();//just to hold second ...
-                    flag = true;
+                    option_flag = true;
                 }
 
 
-                if (flag)//it mean if flag is true do the following.. if not do else ...
+                if (option_flag)//it mean if flag is true do the following.. if not do else ...
                 {
                     Console.WriteLine("Try to enter one option in the menu plases ... click enter key to start over");
                     Console.ReadLine();//just to hold second ...
