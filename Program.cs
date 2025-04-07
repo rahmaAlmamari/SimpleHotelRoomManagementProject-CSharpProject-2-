@@ -16,6 +16,7 @@ namespace Project2
         static double[] roomRates;
         static bool[] isReserved; // fals -> not reserved (Available) ... true -> reserved 
         static string[] guestNames;
+        static int[] guestRoomNum;
         static int[] nights;
         static DateTime[] bookingDates;
 
@@ -47,6 +48,7 @@ namespace Project2
             roomRates = new double[MAX_ROOMS];
             isReserved = new bool[MAX_ROOMS];
             guestNames = new string[MAX_ROOMS];
+            guestRoomNum = new int[MAX_ROOMS];
             nights = new int[MAX_ROOMS];
             bookingDates = new DateTime[MAX_ROOMS];
 
@@ -225,6 +227,8 @@ namespace Project2
         static void ViewAllRooms()
         {
             string Status;
+            string guestName = "Null";
+            double totalCost = 0;
             Console.WriteLine("Room Information: \nNumber | Daily Rate | Status  | Status Details\n");
             //to print all the recored based on roomCount ...
             for (int i = 0; i < roomCount; i++)
@@ -237,7 +241,21 @@ namespace Project2
                 {
                     Status = "Reserved";
                 }
-                Console.WriteLine($"{roomNumbers[i]} | {roomRates[i]} | {Status}");
+
+                for(int j = 0; j < roomCount; j++)
+                {
+                    if (roomNumbers[i] == guestRoomNum[j])
+                    {
+                        guestName = guestNames[j];
+                        totalCost = nights[j] * roomRates[i];
+                    }
+                    else
+                    {
+                        guestName = "Null";
+                        totalCost = 0;
+                    }
+                }
+                Console.WriteLine($"{roomNumbers[i]} | {roomRates[i]} | {Status} | Guest Name: {guestName}, Total Cost: {totalCost}");
             }
         }
 
@@ -252,7 +270,7 @@ namespace Project2
 
                 //part 1 code ... (to display all available room and tell the user if there is no)
                 int notAvailable = 0;
-                int isAvailable = 0;
+                //int isAvailable = 0;
                 Console.WriteLine("Room Available: \nNumber | Daily Rate\n");
                 //to print all the recored based on roomCount ...
                 for (int i = 0; i < roomCount; i++)
@@ -260,6 +278,7 @@ namespace Project2
                     if (isReserved[i] == false)
                     {
                         Console.WriteLine($"{roomNumbers[i]} | {roomRates[i]}");
+                        //isAvailable++;
                     }
                     else
                     {
@@ -270,6 +289,8 @@ namespace Project2
                 if (notAvailable == roomCount)
                 {
                     Console.WriteLine("Sory there is no more room available ...");
+                    //choice = 'n';
+                    break;
                 }
 
                 //part 2 code ... (to allow the user to Reserve a room)
@@ -313,6 +334,8 @@ namespace Project2
                     {
                         try
                         {
+                            bool exit = false;
+                            bool available = false;
                             //to store room number into RoomNumber variable ....
                             Console.WriteLine("Enter room number you want to reseved:");
                             roomNumToReseve = int.Parse(Console.ReadLine());
@@ -321,28 +344,43 @@ namespace Project2
                             {
                                 if (roomNumToReseve == roomNumbers[i])
                                 {
+                                    exit = true;
+                                    
                                     if (isReserved[i] == false)
                                     {
                                         //isReserved[i] = true;
+                                        available = true;
                                         index = i;
+                                        
                                     }
                                     else
                                     {
-                                        Console.WriteLine("This room is alraedy reseved");
+                                        //Console.WriteLine("This room is alraedy reseved");
                                         flag_rom_number = true;
                                     }
                                     
                                 }
                                 else
                                 {
-                                    Console.WriteLine("This room number do not exit please enter anther number!");
+                                    //Console.WriteLine("This room number do not exit please enter anther number!");
                                     flag_rom_number = true;
                                 }
                             }
+
+                            if (exit == false || available == false)
+                            {
+                                Console.WriteLine("This room number do not exit or it is alraedy reseved please enter anther number!");
+                            }
+                            else
+                            {
+                                flag_rom_number = false;
+                            }
+
                         }
                         catch (Exception e)
                         {
                             Console.WriteLine("Room number not entered due to: " + e.Message);
+                            flag_rom_number = true;
                         }
 
                     } while (flag_rom_number);
@@ -376,12 +414,15 @@ namespace Project2
 
                     //to store guest info in the arrays ...
                     guestNames[tryToReseveRoom] = guestName;
+                    guestRoomNum[tryToReseveRoom] = roomNumToReseve;
                     nights[tryToReseveRoom] = nights_number;
                     bookingDates[tryToReseveRoom] = guest_date;
                     isReserved[index] = true;
 
                     // so the system know that there are one more room reseved ......
                     tryToReseveRoom++;
+                    //so the system know that one room is reseved 
+                    //isAvailable--;
                     Console.WriteLine("Room reseve successfully ...");
                     Console.WriteLine("Do you want to reseve anther room? y / n");
                     choice = Console.ReadKey().KeyChar;
