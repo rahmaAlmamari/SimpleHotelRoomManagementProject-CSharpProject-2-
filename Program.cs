@@ -235,35 +235,19 @@ namespace Project2
             for (int i = 0; i < roomCount; i++)
             {
                 string Status;
-                string guestName = "null";
+                //string guestName = "null";
                 double totalCost = 0;
                 if (isReserved[i] == false)
                 {
                     Status = "Available";
+                    Console.WriteLine($"{roomNumbers[i]} | {roomRates[i]} | {Status} | Guest Name: Null, Total Cost: 0");
                 }
                 else
                 {
                     Status = "Reserved";
+                    Console.WriteLine($"{roomNumbers[i]} | {roomRates[i]} | {Status} | Guest Name: {guestNames[i]}, Total Cost: {nights[i] * roomRates[i]}");
                 }
-                //to get guest name and total cost ...
-                for(int j = 0; j < roomCount; j++)
-                {
-                    if (roomNumbers[i] == guestRoomNum[j])
-                    {
-                        guestName = guestNames[j];
-                        totalCost = nights[j] * roomRates[i];
-                        Console.WriteLine(guestName);
-                        Console.WriteLine(totalCost);
-                    }
-                    //else
-                    //{
-                    //    guestName = "Null";
-                    //    totalCost = 0;
-                    //}
-
-                    
-                }
-                Console.WriteLine($"{roomNumbers[i]} | {roomRates[i]} | {Status} | Guest Name: {guestName}, Total Cost: {totalCost}");
+ 
             }
         }
 
@@ -422,10 +406,10 @@ namespace Project2
                     guest_date = DateTime.Now;
 
                     //to store guest info in the arrays ...
-                    guestNames[tryToReseveRoom] = guestName;
-                    guestRoomNum[tryToReseveRoom] = roomNumToReseve;
-                    nights[tryToReseveRoom] = nights_number;
-                    bookingDates[tryToReseveRoom] = guest_date;
+                    guestNames[index] = guestName;
+                    //guestRoomNum[tryToReseveRoom] = roomNumToReseve;
+                    nights[index] = nights_number;
+                    bookingDates[index] = guest_date;
                     isReserved[index] = true;
                     guestCount++;
 
@@ -461,27 +445,27 @@ namespace Project2
             //to get all reserved room details ...
             for(int i = 0; i<roomCount; i++)
             {
-                guestName = guestNames[i];
-                roomNum = guestRoomNum[i];
-                night = nights[i];
+                //guestName = guestNames[i];
+                //roomNum = guestRoomNum[i];
+                //night = nights[i];
 
-                //to get Daily Rate ...
-                for(int j = 0; j < roomCount; j++)
-                {
-                    if (guestRoomNum[i] == roomNumbers[j])
-                    {
-                        index = j;
-                        break;
-                    }
+                ////to get Daily Rate ...
+                //for(int j = 0; j < roomCount; j++)
+                //{
+                //    if (guestRoomNum[i] == roomNumbers[j])
+                //    {
+                //        index = j;
+                //        break;
+                //    }
               
-                }
-                rate = roomRates[index];
-                //to get total cost ...
-                totalCost = rate * night;
-                //Console.WriteLine(isReserved[index]);
+                //}
+                //rate = roomRates[index];
+                ////to get total cost ...
+                //totalCost = rate * night;
+                ////Console.WriteLine(isReserved[index]);
                 if (isReserved[i] == true)
                 {
-                    Console.WriteLine($"{guestName} | {roomNum} | {night} | {rate} | {totalCost}");
+                    Console.WriteLine($"{guestNames[i]} | {roomNumbers[i]} | {nights[i]} | {roomRates[i]} | {nights[i] * roomRates[i]}");
                 }
             }
 
@@ -563,7 +547,19 @@ namespace Project2
         //6. Find the highest-paying guest ...
         static void FindHighestPayingGuest()
         {
-            Console.WriteLine("6");
+            double maxCost = 0;
+            double cost = 0;
+            int guestIndex = 0;
+            for(int i = 0; i < guestCount; i++)
+            {
+                cost = roomRates[i] * nights[i];
+                if(cost > maxCost)
+                {
+                    maxCost = cost;
+                    guestIndex = i;
+                }
+            }
+            Console.WriteLine("Guest with the highest amount is:" + guestNames[guestIndex]);
         }
 
         //7. Cancel a reservation by room number ...
