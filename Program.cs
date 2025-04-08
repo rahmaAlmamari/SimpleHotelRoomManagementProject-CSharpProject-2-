@@ -565,7 +565,56 @@ namespace Project2
         //7. Cancel a reservation by room number ...
         static void CancelReservationByRoomNumber()
         {
-            Console.WriteLine("7");
+            char choice;
+            // do loop to repeat the process of adding new Room 
+            //based on the user choice ...
+            do
+            {
+                int roomNumCancel;
+                int index = 0;
+                bool flag = true;
+                //to store room number to cancel into roomNumCancel variable ....
+                Console.WriteLine("Enter room number to cancel:");
+                roomNumCancel = int.Parse(Console.ReadLine());
+
+                for(int i = 0; i<roomCount; i++)
+                {
+                    if(roomNumCancel == roomNumbers[i])
+                    {
+                        //index = i;
+                        flag = false;
+                        isReserved[i] = false;
+                        guestNames[i] = "Null";
+                        nights[i] = 0;
+
+                        Console.WriteLine("Room number " + roomNumCancel + " is cancel");
+                    }
+                    //else
+                    //{
+                    //    // flag = false;
+                    //    Console.WriteLine("Room number not found!");
+                    //}
+                }
+                //if (flag)
+                //{
+                //    isReserved[index] = false;
+                //    guestNames[index] = "Null";
+                //    nights[index] = 0;
+                //}
+                //else
+                //{
+                //    Console.WriteLine("Room number not found!");
+                //}
+                if (flag)
+                {
+                    Console.WriteLine("Room number not found!");
+                }
+
+
+                Console.WriteLine("Do you want to Cancel for anther Reservation guest? y / n");
+                choice = Console.ReadKey().KeyChar;
+                Console.ReadLine();//just to hold second ...
+            } while (choice == 'y' || choice == 'Y');
         }
 
 
