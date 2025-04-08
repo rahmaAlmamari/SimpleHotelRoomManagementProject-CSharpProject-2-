@@ -226,13 +226,14 @@ namespace Project2
         // 2. View all rooms ...
         static void ViewAllRooms()
         {
-            string Status;
-            string guestName = "Null";
-            double totalCost = 0;
+            
             Console.WriteLine("Room Information: \nNumber | Daily Rate | Status  | Status Details\n");
             //to print all the recored based on roomCount ...
             for (int i = 0; i < roomCount; i++)
             {
+                string Status;
+                string guestName = "null";
+                double totalCost = 0;
                 if (isReserved[i] == false)
                 {
                     Status = "Available";
@@ -241,19 +242,23 @@ namespace Project2
                 {
                     Status = "Reserved";
                 }
-
+                //to get guest name and total cost ...
                 for(int j = 0; j < roomCount; j++)
                 {
                     if (roomNumbers[i] == guestRoomNum[j])
                     {
                         guestName = guestNames[j];
                         totalCost = nights[j] * roomRates[i];
+                        Console.WriteLine(guestName);
+                        Console.WriteLine(totalCost);
                     }
-                    else
-                    {
-                        guestName = "Null";
-                        totalCost = 0;
-                    }
+                    //else
+                    //{
+                    //    guestName = "Null";
+                    //    totalCost = 0;
+                    //}
+
+                    
                 }
                 Console.WriteLine($"{roomNumbers[i]} | {roomRates[i]} | {Status} | Guest Name: {guestName}, Total Cost: {totalCost}");
             }
@@ -290,7 +295,8 @@ namespace Project2
                 {
                     Console.WriteLine("Sory there is no more room available ...");
                     //choice = 'n';
-                    break;
+                    //break;
+                    return;
                 }
 
                 //part 2 code ... (to allow the user to Reserve a room)
@@ -441,7 +447,38 @@ namespace Project2
         //4. View all reservations with total cost ...
         static void ViewAllReservationsWithTotalCost()
         {
-            Console.WriteLine("4");
+            string guestName;
+            int roomNum;
+            int night;
+            int index = 0;
+            double rate;
+            double totalCost;
+            Console.WriteLine("Reserved Room Information: \nGuest Name | Room Number | Nights | Daily Rate | Total Cost \n");
+            //to get all reserved room details ...
+            for(int i = 0; i<roomCount; i++)
+            {
+                guestName = guestNames[i];
+                roomNum = guestRoomNum[i];
+                night = nights[i];
+
+                //to get Daily Rate ...
+                for(int j = 0; j < roomCount; j++)
+                {
+                    if (guestRoomNum[i] == roomNumbers[j])
+                    {
+                        index = j;
+                    }
+                }
+                rate = roomRates[index];
+                //to get total cost ...
+                totalCost = rate * night;
+
+                if (isReserved[index] == true)
+                {
+                    Console.WriteLine($"{guestName} | {roomNum} | {night} | {rate} | {totalCost}");
+                }
+            }
+
         }
 
         //5. Search reservation by guest name ...
