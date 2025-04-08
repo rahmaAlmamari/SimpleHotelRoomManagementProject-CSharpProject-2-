@@ -1,5 +1,7 @@
-﻿using System.Net.NetworkInformation;
+﻿using System;
+using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Project2
@@ -11,6 +13,7 @@ namespace Project2
         // declare the globle variable needed ...
         static int MAX_ROOMS;
         static int roomCount = 0;
+        static int guestCount = 0;
         // declare the array and variable needed ....
         static int[] roomNumbers;
         static double[] roomRates;
@@ -424,6 +427,7 @@ namespace Project2
                     nights[tryToReseveRoom] = nights_number;
                     bookingDates[tryToReseveRoom] = guest_date;
                     isReserved[index] = true;
+                    guestCount++;
 
                     // so the system know that there are one more room reseved ......
                     tryToReseveRoom++;
@@ -486,7 +490,74 @@ namespace Project2
         //5. Search reservation by guest name ...
         static void SearchReservationByGuestName()
         {
-            Console.WriteLine("5");
+            char choice;
+            // do loop to repeat the process of adding new Room 
+            //based on the user choice ...
+            do
+            {
+
+                //guest name input process code ... 
+                bool flag_nameSearch = false;//to know if the name add or not ...
+            do
+            {
+                string GuestNameToSearch;
+                //to store guest name to search into GuestNameToSearch variable ....
+                Console.WriteLine("Enter guest name to search:");
+                GuestNameToSearch = Console.ReadLine();
+
+                bool check_name = IsAlpha(GuestNameToSearch);
+                if (check_name == false)
+                {
+                    Console.WriteLine("Guest name can not contains number and con not be null ..." +
+                                      "please enter student name again");
+                    flag_nameSearch = true;
+                }
+                else
+                {
+                    flag_nameSearch = true;
+                    bool flag = true;
+                    for (int i = 0; i < guestCount; i++)
+                    {
+                        if (GuestNameToSearch.ToLower() == guestNames[i].ToLower())
+                        {
+                            flag = false;
+                            flag_nameSearch = false;
+                            //to get Daily Rate ...
+                            int index = 0;
+                            double rate;
+                            double totalCost;
+                            for (int j = 0; j < roomCount; j++)
+                            {
+                                if (guestRoomNum[i] == roomNumbers[j])
+                                {
+                                    index = j;
+                                    break;
+                                }
+
+                            }
+                            rate = roomRates[index];
+                            //to get total cost ...
+                            totalCost = rate * nights[i];
+                            Console.WriteLine("Reserved Room Information: \nGuest Name | Room Number | Nights | Daily Rate | Total Cost \n");
+                            Console.WriteLine($"{guestNames[i]} | {guestRoomNum[i]} | {nights[i]} | {rate} | {totalCost}");
+                        }
+
+                    }
+                    if (flag)
+                    {
+                        Console.WriteLine("Guest name not found");
+                        flag_nameSearch = true;
+                    }
+                }
+
+            } while (flag_nameSearch);
+
+                Console.WriteLine("Do you want to search for anther guest? y / n");
+                choice = Console.ReadKey().KeyChar;
+                Console.ReadLine();//just to hold second ...
+
+            } while (choice == 'y' || choice == 'Y');
+
         }
 
         //6. Find the highest-paying guest ...
