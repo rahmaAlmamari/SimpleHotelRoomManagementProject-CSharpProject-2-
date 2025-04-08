@@ -467,13 +467,15 @@ namespace Project2
                     if (guestRoomNum[i] == roomNumbers[j])
                     {
                         index = j;
+                        break;
                     }
+              
                 }
                 rate = roomRates[index];
                 //to get total cost ...
                 totalCost = rate * night;
-
-                if (isReserved[index] == true)
+                //Console.WriteLine(isReserved[index]);
+                if (isReserved[i] == true)
                 {
                     Console.WriteLine($"{guestName} | {roomNum} | {night} | {rate} | {totalCost}");
                 }
